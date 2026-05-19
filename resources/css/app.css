@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* optional tambahan biar enak */
+body {
+    font-family: sans-serif;
+}
+button {
+    transition: all 0.3s ease;
+}
