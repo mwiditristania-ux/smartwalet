@@ -16,20 +16,9 @@ class SensorController extends Controller
     // =========================
     // DASHBOARD
     // =========================
-  public function dashboard(Request $request)
+public function dashboard(Request $request)
 {
     $query = Sensor::query();
-
-    // SEARCH
-    if ($request->search) {
-
-        $query->where(function ($q) use ($request) {
-
-            $q->where('suhu', 'like', '%' . $request->search . '%')
-              ->orWhere('kelembaban', 'like', '%' . $request->search . '%');
-
-        });
-    }
 
     // FILTER STATUS
     if ($request->status == 'nyaman') {
@@ -49,25 +38,25 @@ class SensorController extends Controller
         });
     }
 
-    // PAGINATION 50 DATA
+    // SEARCH
+    if ($request->search) {
+
+        $query->where(function ($q) use ($request) {
+
+            $q->where('suhu', 'like', '%' . $request->search . '%')
+              ->orWhere('kelembaban', 'like', '%' . $request->search . '%');
+
+        });
+    }
+
+    // PAGINATION
     $riwayat = $query
         ->latest()
-        ->paginate(50)
+        ->paginate(40)
         ->withQueryString();
 
     return view('dashboard', compact('riwayat'));
 }
-
-    // =========================
-    // INDEX
-    // =========================
-    public function index()
-    {
-        $sensors = Sensor::latest()
-            ->paginate(50);
-
-        return view('sensors.index', compact('sensors'));
-    }
 
     // =========================
     // CREATE
@@ -94,7 +83,7 @@ class SensorController extends Controller
 
         ]);
 
-        $sensor = Sensor::create([
+        Sensor::create([
 
             'suhu' => $request->suhu,
             'kelembaban' => $request->kelembaban,
@@ -103,7 +92,8 @@ class SensorController extends Controller
 
         return redirect()
             ->back()
-            ->with('success',
+            ->with(
+                'success',
                 '✅ Data berhasil disimpan!'
             );
     }
@@ -141,7 +131,8 @@ class SensorController extends Controller
 
         return redirect()
             ->route('dashboard')
-            ->with('success',
+            ->with(
+                'success',
                 '✏️ Data berhasil diupdate!'
             );
     }
@@ -157,7 +148,8 @@ class SensorController extends Controller
 
         return redirect()
             ->back()
-            ->with('success',
+            ->with(
+                'success',
                 '🗑️ Data berhasil dihapus!'
             );
     }
@@ -171,7 +163,8 @@ class SensorController extends Controller
 
         return redirect()
             ->back()
-            ->with('success',
+            ->with(
+                'success',
                 '🧹 Semua data berhasil dihapus!'
             );
     }

@@ -4,548 +4,407 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Smart Walet</title>
+<title>Smart Walet Dashboard</title>
 
+<!-- TAILWIND -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- CHART -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+.title-font{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    letter-spacing:-1.7px;
+}
+
+.body-font{
+    font-family:'Inter',sans-serif;
 }
 
 body{
-    font-family:'Poppins',sans-serif;
+    min-height:100vh;
     overflow-x:hidden;
-    color:white;
-    background:#dff4ff;
+
+   background:
+linear-gradient(
+    135deg,
+    #eef5ff 0%,
+    #edf6ff 25%,
+    #eaf4ff 50%,
+    #f4f9ff 100%
+);
+
+    position:relative;
 }
 
-/* ===== BACKGROUND ===== */
-.bg{
+/* ===== BACKGROUND EFFECT ===== */
+body::before{
+
+    content:'';
+
+    position:fixed;
+    inset:0;
+
+    background:
+
+    radial-gradient(
+        circle at top left,
+        rgba(96,165,250,0.30),
+        transparent 30%
+    ),
+
+    radial-gradient(
+        circle at bottom right,
+        rgba(125,211,252,0.25),
+        transparent 35%
+    ),
+
+    radial-gradient(
+        circle at center,
+        rgba(191,219,254,0.15),
+        transparent 45%
+    );
+
+    z-index:-2;
+}
+
+/* ===== IMAGE BACKGROUND ===== */
+body::after{
+
+    content:'';
+
     position:fixed;
     inset:0;
 
     background:
     linear-gradient(
-        rgba(219,239,255,0.82),
-        rgba(191,229,255,0.88)
+        rgba(219,234,254,0.68),
+        rgba(239,246,255,0.78)
     ),
     url("{{ asset('images/amazewalet.png') }}");
 
     background-size:cover;
     background-position:center;
 
-    z-index:-2;
+    opacity:0.35;
+
+    z-index:-3;
 }
 
-/* ===== EFFECT ===== */
-.bg::after{
-    content:'';
-
-    position:absolute;
-    inset:0;
+/* ===== GLASS ===== */
+.glass{
 
     background:
-    radial-gradient(circle at top right,
-    rgba(255,255,255,0.4),
-    transparent 40%);
+    rgba(255,255,255,0.50);
 
-    z-index:-1;
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border:
+    1px solid rgba(255,255,255,0.55);
+
+    box-shadow:
+
+    0 8px 32px rgba(148,163,184,0.10),
+
+    inset 0 1px 1px rgba(255,255,255,0.45);
+}
+
+/* ===== SHADOW ===== */
+.soft-shadow{
+
+    box-shadow:
+
+    0 8px 32px rgba(59,130,246,0.10),
+
+    0 0 25px rgba(96,165,250,0.10),
+
+    inset 0 1px 1px rgba(255,255,255,0.35);
 }
 
 /* ===== SIDEBAR ===== */
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
+.sidebar-shadow{
 
-    width:260px;
-    height:100%;
+    box-shadow:
 
-    padding:28px 20px;
+    0 10px 40px rgba(59,130,246,0.12),
+
+    0 0 45px rgba(125,211,252,0.12);
+}
+
+/* ===== CARD HOVER ===== */
+.hover-card{
+
+    transition:all 0.35s ease;
+}
+
+.hover-card:hover{
+
+    transform:
+    translateY(-6px);
+
+    box-shadow:
+
+    0 14px 40px rgba(96,165,250,0.18),
+
+    0 0 30px rgba(125,211,252,0.22);
+}
+
+/* ===== NEON TEXT ===== */
+.neon-blue{
+
+    text-shadow:
+
+    0 0 10px rgba(96,165,250,0.35),
+
+    0 0 22px rgba(125,211,252,0.25);
+}
+
+/* ===== INPUT ===== */
+.soft-input{
 
     background:
-    linear-gradient(
-        180deg,
-        rgba(29,78,216,0.95),
-        rgba(14,165,233,0.95)
-    );
+    rgba(255,255,255,0.32);
 
-    backdrop-filter:blur(10px);
+    border:
+    1px solid rgba(255,255,255,0.35);
 
-    border-right:
-    1px solid rgba(255,255,255,0.12);
+    color:#334155;
 
     box-shadow:
-    0 0 30px rgba(0,0,0,0.15);
-
-    z-index:10;
+    inset 0 1px 2px rgba(255,255,255,0.35);
 }
 
-.logo-box{
-    text-align:center;
-    margin-bottom:35px;
-}
+.soft-input:focus{
 
-.logo-box h2{
-    font-size:28px;
-    font-weight:700;
-    color:white;
-}
+    outline:none;
 
-.logo-box p{
-    margin-top:6px;
-    font-size:13px;
-    opacity:0.9;
-}
-
-/* ===== MENU ===== */
-.menu{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    width:100%;
-
-    padding:15px 18px;
-    margin-bottom:15px;
-
-    border:none;
-    border-radius:18px;
-
-    background:rgba(255,255,255,0.14);
-
-    color:white;
-    text-decoration:none;
-
-    font-weight:500;
-
-    cursor:pointer;
-
-    transition:0.25s;
-}
-
-.menu:hover{
-    background:white;
-    color:#0284c7;
-
-    transform:translateX(5px);
-}
-
-.menu.active{
-    background:white;
-    color:#0284c7;
+    border:
+    1px solid rgba(96,165,250,0.45);
 
     box-shadow:
-    0 10px 25px rgba(255,255,255,0.25);
+    0 0 0 4px rgba(147,197,253,0.18);
 }
 
-.logout{
-    background:rgba(239,68,68,0.18);
-}
-
-.logout:hover{
-    background:#ef4444;
-    color:white;
-}
-
-/* ===== MAIN ===== */
-.main{
-    margin-left:270px;
-    padding:35px 25px;
-}
-
-/* ===== CONTAINER ===== */
-.container{
-    max-width:1200px;
-    margin:auto;
-}
-
-/* ===== HEADER ===== */
-.header{
-    padding:35px;
-
-    border-radius:28px;
+/* ===== BUTTON ===== */
+.soft-btn{
 
     background:
     linear-gradient(
         135deg,
-        rgba(255,255,255,0.95),
-        rgba(224,242,254,0.95)
+        rgba(191,219,254,0.85),
+        rgba(125,211,252,0.78)
     );
-
-    color:#0f172a;
-
-    box-shadow:
-    0 10px 35px rgba(14,165,233,0.18);
-
-    margin-bottom:30px;
-
-    border:
-    1px solid rgba(255,255,255,0.4);
-}
-
-.header-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:20px;
-}
-
-.header h1{
-    font-size:38px;
-    color:#0284c7;
-    margin-bottom:10px;
-}
-
-.header p{
-    color:#475569;
-    line-height:1.8;
-}
-
-.live{
-    padding:12px 20px;
-
-    border-radius:30px;
-
-    background:
-    rgba(14,165,233,0.12);
-
-    color:#0284c7;
-
-    font-weight:600;
-
-    animation:blink 1s infinite;
-}
-
-@keyframes blink{
-    0%,100%{
-        opacity:1;
-    }
-
-    50%{
-        opacity:0.5;
-    }
-}
-
-/* ===== INFO BOX ===== */
-.info-grid{
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
-
-    gap:20px;
-
-    margin-bottom:25px;
-}
-
-/* ===== CARD ===== */
-.card{
-    padding:25px;
-
-    border-radius:24px;
-
-    background:
-    linear-gradient(
-        145deg,
-        rgba(255,255,255,0.97),
-        rgba(240,249,255,0.95)
-    );
-
-    border:
-    1px solid rgba(255,255,255,0.5);
-
-    box-shadow:
-    0 10px 30px rgba(14,165,233,0.12);
-
-    transition:0.3s;
-
-    color:#0f172a;
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.card::before{
-    content:'';
-
-    position:absolute;
-    top:-30px;
-    right:-30px;
-
-    width:120px;
-    height:120px;
-
-    background:
-    rgba(14,165,233,0.08);
-
-    border-radius:50%;
-}
-
-.card:hover{
-    transform:translateY(-6px);
-
-    box-shadow:
-    0 15px 40px rgba(14,165,233,0.2);
-}
-
-.card-title{
-    font-size:17px;
-    font-weight:600;
-}
-
-.value{
-    margin-top:16px;
-
-    font-size:42px;
-    font-weight:700;
-
-    color:#0284c7;
-}
-
-.desc{
-    margin-top:10px;
-
-    color:#64748b;
-    font-size:14px;
-    line-height:1.7;
-}
-
-/* ===== STATUS ===== */
-.status{
-    margin-top:25px;
-
-    padding:24px;
-
-    border-radius:24px;
-
-    text-align:center;
-
-    font-weight:600;
-
-    font-size:20px;
-
-    background:
-    rgba(255,255,255,0.9);
-
-    color:#0f172a;
-
-    border:
-    1px solid rgba(255,255,255,0.4);
-
-    box-shadow:
-    0 10px 30px rgba(14,165,233,0.12);
-
-    transition:0.3s;
-}
-
-.ideal{
-    color:#16a34a;
-
-    background:
-    rgba(220,252,231,0.95);
-}
-
-.tidak{
-    color:#dc2626;
-
-    background:
-    rgba(254,226,226,0.95);
-}
-
-/* ===== UPDATE ===== */
-.info{
-    margin-top:10px;
-
-    font-size:14px;
-
-    color:#475569;
-}
-
-/* ===== TABLE ===== */
-.table-box{
-    margin-top:30px;
-
-    padding:25px;
-
-    border-radius:25px;
-
-    background:
-    rgba(255,255,255,0.94);
-
-    box-shadow:
-    0 10px 30px rgba(14,165,233,0.12);
-
-    overflow-x:auto;
-}
-
-.table-title{
-    font-size:22px;
-    font-weight:700;
-    color:#0284c7;
-
-    margin-bottom:20px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th{
-    background:#0ea5e9;
-    color:white;
-
-    padding:16px;
-    text-align:left;
-
-    font-size:14px;
-}
-
-td{
-    padding:16px;
 
     color:#334155;
 
-    border-bottom:
-    1px solid rgba(148,163,184,0.2);
+    box-shadow:
+    0 8px 24px rgba(96,165,250,0.18);
 
-    background:
-    rgba(255,255,255,0.8);
+    transition:0.3s;
 }
 
-tr:hover td{
-    background:
-    rgba(224,242,254,0.5);
+.soft-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+    0 10px 28px rgba(96,165,250,0.28),
+
+    0 0 20px rgba(125,211,252,0.25);
 }
 
 /* ===== CHART ===== */
-.chart-box{
-    margin-top:30px;
-
-    padding:28px;
-
-    border-radius:28px;
-
-    background:
-    rgba(255,255,255,0.94);
-
-    box-shadow:
-    0 10px 35px rgba(14,165,233,0.12);
-}
-
-.chart-title{
-    font-size:22px;
-    font-weight:700;
-
-    color:#0284c7;
-
-    margin-bottom:20px;
-}
-
 canvas{
     width:100% !important;
-    height:350px !important;
+    height:360px !important;
 }
 
-/* ===== FOOTER ===== */
-.footer{
-    margin-top:25px;
+.chart-glow{
 
-    text-align:center;
-
-    color:#475569;
-    font-size:14px;
+    position:relative;
+    overflow:hidden;
 }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
+.chart-glow::before{
 
-    .sidebar{
-        width:100%;
-        height:auto;
-        position:relative;
-    }
+    content:'';
 
-    .main{
-        margin-left:0;
-    }
+    position:absolute;
 
-    .header-top{
-        flex-direction:column;
-        align-items:flex-start;
-    }
+    width:280px;
+    height:280px;
+
+    background:
+    rgba(125,211,252,0.16);
+
+    border-radius:50%;
+
+    top:-120px;
+    right:-80px;
+
+    filter:blur(40px);
 }
 
 /* ===== PAGINATION ===== */
 
 nav[role="navigation"]{
-    margin-top:25px;
+    width:100%;
+    margin-top:35px;
 }
 
+/* hide text */
 nav[role="navigation"] > div:first-child{
-    display:none;
+    display:none !important;
 }
 
-nav[role="navigation"] svg{
-    width:18px;
-    height:18px;
+/* wrapper */
+nav[role="navigation"] > div:last-child{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    width:100% !important;
 }
 
-nav[role="navigation"] span,
-nav[role="navigation"] a{
+/* ul */
+nav[role="navigation"] ul{
 
-    padding:10px 16px;
+    display:flex !important;
 
-    border-radius:12px;
+    flex-direction:row !important;
 
-    text-decoration:none;
+    justify-content:center !important;
 
-    font-weight:600;
+    align-items:center !important;
 
-    margin:0 4px;
+    flex-wrap:wrap !important;
+
+    gap:12px !important;
+
+    list-style:none !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+}
+
+/* li */
+nav[role="navigation"] li{
+    display:flex !important;
+}
+
+/* button */
+nav[role="navigation"] a,
+nav[role="navigation"] span{
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+    min-width:46px !important;
+
+    height:46px !important;
+
+    padding:0 16px !important;
+
+    border-radius:18px !important;
+
+    background:
+    rgba(255,255,255,0.28) !important;
+
+    backdrop-filter:blur(14px);
+
+    border:
+    1px solid rgba(255,255,255,0.35);
+
+    color:#334155 !important;
+
+    font-weight:700 !important;
+
+    text-decoration:none !important;
+
+    box-shadow:
+
+    0 8px 24px rgba(96,165,250,0.14),
+
+    0 0 20px rgba(125,211,252,0.10);
 
     transition:0.25s;
 }
 
-/* ANGKA AKTIF */
-nav[role="navigation"] span[aria-current="page"] span{
-
-    background:#0ea5e9 !important;
-
-    color:white !important;
-}
-
-/* ANGKA */
-nav[role="navigation"] a{
-
-    background:white;
-
-    color:#0f172a;
-
-    box-shadow:
-    0 4px 10px rgba(0,0,0,0.08);
-}
-
-/* HOVER */
+/* hover */
 nav[role="navigation"] a:hover{
 
-    background:#0ea5e9;
+    transform:
+    translateY(-3px);
 
-    color:white;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(147,197,253,0.95),
+        rgba(125,211,252,0.95)
+    ) !important;
+
+    color:white !important;
+
+    box-shadow:
+
+    0 10px 30px rgba(96,165,250,0.22),
+
+    0 0 24px rgba(125,211,252,0.25);
 }
 
-/* TULISAN ABU DIHILANGKAN */
-nav[role="navigation"] p{
-    display:none;
+/* active */
+nav[role="navigation"] .active span{
+
+    background:
+    linear-gradient(
+        135deg,
+        #60a5fa,
+        #7dd3fc
+    ) !important;
+
+    color:white !important;
+
+    box-shadow:
+
+    0 12px 30px rgba(96,165,250,0.28),
+
+    0 0 26px rgba(125,211,252,0.28);
+}
+
+/* icon */
+nav[role="navigation"] svg{
+
+    width:18px;
+
+    height:18px;
+}
+
+/* ===== FONT TITLE ===== */
+
+.title-font{
+    font-family:'Sora',sans-serif;
+    letter-spacing:-1.5px;
+}
+
+/* ===== FONT BODY ===== */
+
+.body-font{
+    font-family:'Manrope',sans-serif;
 }
 
 </style>
@@ -553,61 +412,84 @@ nav[role="navigation"] p{
 
 <body>
 
-<div class="bg"></div>
-
 <!-- SIDEBAR -->
-<div class="sidebar">
+<div class="fixed left-0 top-0 h-full w-[260px] p-5 z-50">
 
-    <div class="logo-box">
-        <h2>🐦 Smart Walet</h2>
-        <p>Sistem Monitoring Rumah Walet</p>
+    <div class="glass sidebar-shadow rounded-[32px] h-full p-6">
+
+        <div class="mb-10">
+
+            <h1 class="title-font text-3xl font-bold text-slate-700 neon-blue">
+                🐦 Smart Walet
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                Monitoring rumah walet realtime modern.
+            </p>
+
+        </div>
+
+        <div class="space-y-3">
+
+            <a href="{{ route('dashboard') }}"
+            class="flex items-center gap-3 px-5 py-4 rounded-2xl bg-blue-100/60 text-slate-700 font-medium">
+
+                🏠 Dashboard
+
+            </a>
+
+            <form method="POST"
+            action="{{ route('logout') }}">
+
+                @csrf
+
+                <button type="submit"
+                class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl bg-red-100/40 text-slate-700 font-medium">
+
+                    🚪 Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
-
-    <a href="{{ route('dashboard') }}"
-    class="menu active">
-
-        🏠 Dashboard
-
-    </a>
-
-    <form method="POST"
-    action="{{ route('logout') }}">
-
-        @csrf
-
-        <button type="submit"
-        class="menu logout">
-
-            🚪 Logout
-
-        </button>
-
-    </form>
 
 </div>
 
 <!-- MAIN -->
-<div class="main">
-
-<div class="container">
+<div class="ml-[280px] p-8">
 
     <!-- HEADER -->
-    <div class="header">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-10">
 
-        <div class="header-top">
+        <div>
 
-            <div>
-                <h1>Monitoring Rumah Walet</h1>
+            <<h2 class="title-font text-5xl font-semibold text-slate-700 neon-blue tracking-tight">
+                Dashboard Monitoring
+            </h2>
 
-                <p>
-                    Dashboard ini digunakan untuk memantau kondisi suhu dan kelembaban
-                    rumah walet secara realtime menggunakan sensor DHT dan ESP8266.
-                    Tampilan dibuat lebih nyaman, modern, dan mudah dipahami.
-                </p>
+           <p class="mt-4 max-w-2xl leading-[1.9] text-[16px] font-normal text-slate-600 tracking-[0.2px] body-premium">
+    Sistem monitoring suhu dan kelembaban rumah walet berbasis ESP8266 dan DHT11 secara realtime dengan tampilan modern, interaktif, dan efisien untuk menjaga kondisi lingkungan tetap ideal.
+        </p>
+
+        </div>
+
+        <div class="glass soft-shadow rounded-[30px] px-6 py-5">
+
+            <div class="text-sm text-slate-500 mb-1">
+                Hari Ini
             </div>
 
-            <div class="live">
-                🔴 LIVE MONITORING
+            <div id="tanggal"
+            class="text-lg font-medium text-slate-700">
+                --
+            </div>
+
+            <div id="jam"
+            class="text-3xl font-light text-blue-900/80 mt-1">
+                --
             </div>
 
         </div>
@@ -615,58 +497,75 @@ nav[role="navigation"] p{
     </div>
 
     <!-- CARD -->
-    <div class="info-grid">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 mb-8">
 
-        <div class="card">
+        <!-- SUHU -->
+        <div class="glass soft-shadow hover-card rounded-[34px] p-8 relative overflow-hidden">
 
-            <div class="card-title">
-                🌡️ Suhu Ruangan
-            </div>
+            <div class="absolute top-0 right-0 w-40 h-40 bg-blue-200/30 blur-3xl rounded-full"></div>
 
-            <div id="suhu"
-            class="value">
+            <div class="flex items-center justify-between">
 
-                -- °C
+                <div>
 
-            </div>
+                    <div class="text-slate-500 uppercase text-sm tracking-wide">
+                        Suhu Ruangan
+                    </div>
 
-            <div class="desc">
-                Suhu ideal rumah walet berkisar antara 26°C hingga 32°C.
+                    <div id="suhu"
+                    class="text-[78px] font-extralight leading-none mt-5 text-slate-700 neon-blue">
+
+                        --°C
+
+                    </div>
+
+                    <div class="mt-4 text-slate-500">
+                        Rentang suhu ideal 26°C - 30°C
+                    </div>
+
+                </div>
+
+                <div class="w-24 h-24 rounded-[28px] bg-blue-100/70 flex items-center justify-center text-5xl">
+
+                    🌡️
+
+                </div>
+
             </div>
 
         </div>
 
-        <div class="card">
+        <!-- KELEMBABAN -->
+        <div class="glass soft-shadow hover-card rounded-[34px] p-8 relative overflow-hidden">
 
-            <div class="card-title">
-                💧 Kelembaban
-            </div>
+            <div class="absolute top-0 right-0 w-40 h-40 bg-cyan-200/30 blur-3xl rounded-full"></div>
 
-            <div id="kelembaban"
-            class="value">
+            <div class="flex items-center justify-between">
 
-                -- %
+                <div>
 
-            </div>
+                    <div class="text-slate-500 uppercase text-sm tracking-wide">
+                        Kelembaban
+                    </div>
 
-            <div class="desc">
-                Kelembaban ideal membantu menjaga kenyamanan burung walet.
-            </div>
+                    <div id="kelembaban"
+                    class="text-[78px] font-extralight leading-none mt-5 text-slate-700 neon-blue">
 
-        </div>
+                        --%
 
-        <div class="card">
+                    </div>
 
-            <div class="card-title">
-                🐦 Status Rumah Walet
-            </div>
+                    <div class="mt-4 text-slate-500">
+                        Rentang kelembaban ideal 80% - 90%
+                    </div>
 
-            <div class="desc"
-            style="margin-top:15px; line-height:2;">
+                </div>
 
-                ✔️ Monitoring realtime<br>
-                ✔️ Data otomatis update<br>
-                ✔️ Tampilan interaktif
+                <div class="w-24 h-24 rounded-[28px] bg-cyan-100/70 flex items-center justify-center text-5xl">
+
+                    💧
+
+                </div>
 
             </div>
 
@@ -676,175 +575,120 @@ nav[role="navigation"] p{
 
     <!-- STATUS -->
     <div id="statusBox"
-    class="status">
+    class="glass soft-shadow rounded-[34px] p-8 mb-8">
 
-        ⏳ Menunggu data sensor...
+        <div class="text-lg text-slate-500 mb-2">
+            Status Monitoring
+        </div>
 
-    </div>
-
-    <!-- UPDATE -->
-    <div id="lastUpdate"
-    class="info">
-
-        Update: -
+        <div class="text-3xl font-light text-slate-700">
+            ⏳ Menunggu data sensor...
+        </div>
 
     </div>
 
     <!-- FILTER -->
-<div class="table-box">
+    <div class="glass soft-shadow rounded-[34px] p-8 mb-8">
 
-    <div class="table-title">
-        🔍 Filter Monitoring
-    </div>
+        <div class="mb-6">
 
-    <form method="GET"
-    action="{{ route('dashboard') }}"
-    style="
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-top:15px;
-    ">
+            <h3 class="title-font text-2xl font-semibold text-slate-700 neon-blue tracking-tight">
+                Filter Monitoring
+            </h3>
 
-        <!-- SEARCH -->
-        <input
-        type="text"
-        name="search"
-        placeholder="Cari suhu / kelembaban..."
-        value="{{ request('search') }}"
+            <h3 class="title-font text-3xl font-semibold text-slate-700 neon-blue tracking-tight">
+                Cari data suhu dan kelembaban berdasarkan tanggal atau status.
+            </h3>
 
-        style="
-        padding:14px 18px;
-        border-radius:14px;
-        border:none;
-        outline:none;
-        width:260px;
-        background:#f1f5f9;
-        ">
-
-        <!-- SELECT -->
-        <select
-        name="status"
-
-        style="
-        padding:14px 18px;
-        border-radius:14px;
-        border:none;
-        outline:none;
-        background:#f1f5f9;
-        color:#0f172a;
-        ">
-
-            <option value="">
-                Semua Kondisi
-            </option>
-
-            <option value="nyaman"
-            {{ request('status') == 'nyaman' ? 'selected' : '' }}>
-
-                Nyaman
-            </option>
-
-            <option value="tidak_nyaman"
-            {{ request('status') == 'tidak_nyaman' ? 'selected' : '' }}>
-
-                Tidak Nyaman
-            </option>
-
-        </select>
-
-        <!-- BUTTON -->
-        <button type="submit"
-
-        style="
-        padding:14px 24px;
-        border:none;
-        border-radius:14px;
-        background:#0ea5e9;
-        color:white;
-        font-weight:600;
-        cursor:pointer;
-        ">
-
-            Filter
-
-        </button>
-
-    </form>
-
-</div>
-
-    <!-- TABLE -->
-    <div class="table-box">
-
-        <div class="table-title">
-            📋 Informasi Kondisi Ideal
         </div>
 
-        <table>
+        <form method="GET"
+        action="{{ route('dashboard') }}"
+        class="flex flex-wrap gap-4">
 
-            <thead>
+            <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Cari suhu / kelembaban..."
+            class="soft-input px-5 py-4 rounded-2xl w-[260px]">
 
-                <tr>
-                    <th>Parameter</th>
-                    <th>Kondisi Ideal</th>
-                    <th>Keterangan</th>
-                </tr>
+            <select
+            name="status"
+            class="soft-input px-5 py-4 rounded-2xl">
 
-            </thead>
+                <option value="">
+                    Semua Kondisi
+                </option>
 
-            <tbody>
+                <option value="nyaman"
+                {{ request('status') == 'nyaman' ? 'selected' : '' }}>
+                    Nyaman
+                </option>
 
-                <tr>
-                    <td>🌡️ Suhu</td>
-                    <td>26°C - 30°C</td>
-                    <td>Menjaga kenyamanan habitat burung walet.</td>
-                </tr>
+                <option value="tidak_nyaman"
+                {{ request('status') == 'tidak_nyaman' ? 'selected' : '' }}>
+                    Tidak Nyaman
+                </option>
 
-                <tr>
-                    <td>💧 Kelembaban</td>
-                    <td>80% - 90%</td>
-                    <td>Membantu menjaga kelembaban sarang walet.</td>
-                </tr>
+            </select>
 
-                <tr>
-                    <td>📡 Monitoring</td>
-                    <td>Realtime</td>
-                    <td>Data sensor diperbarui otomatis setiap 5 detik.</td>
-                </tr>
+            <input
+            type="date"
+            name="tanggal"
+            value="{{ request('tanggal') }}"
+            class="soft-input px-5 py-4 rounded-2xl">
 
-            </tbody>
+            <button type="submit"
+            class="soft-btn px-8 py-4 rounded-2xl font-medium">
 
-        </table>
+                Filter
+
+            </button>
+
+            <a href="{{ route('export.pdf', request()->query()) }}"
+            class="soft-btn px-8 py-4 rounded-2xl font-medium">
+
+                📄 Cetak PDF
+
+            </a>
+
+        </form>
 
     </div>
 
-@if(request('status'))
+    <!-- TABLE RIWAYAT -->
+@if(request('status') || request('tanggal') || request('search'))
 
-<div class="table-box">
+<div class="glass soft-shadow rounded-[40px] p-8 mb-8 overflow-x-auto">
 
-    <div class="table-title">
+    <div class="mb-6">
 
-        @if(request('status') == 'nyaman')
-            🟢 Riwayat Kondisi Nyaman
-        @else
-            🔴 Riwayat Kondisi Tidak Nyaman
-        @endif
+        <h3 class="text-3xl font-light text-slate-700 neon-blue">
+            Riwayat Monitoring
+        </h3>
+
+        <p class="text-slate-500 mt-2">
+            Data hasil filter monitoring suhu dan kelembaban.
+        </p>
 
     </div>
 
-    <table>
+    <table class="w-full text-left border-separate border-spacing-y-3">
 
         <thead>
-            <tr>
-                <th>No</th>
-                <th>Suhu</th>
-                <th>Kelembaban</th>
-                <th>Status</th>
-                <th>Hari</th>
-                <th>Tanggal</th>
-                <th>Jam</th>
+
+            <tr class="text-slate-600">
+
+                <th class="px-4 py-3">No</th>
+                <th class="px-4 py-3">Suhu</th>
+                <th class="px-4 py-3">Kelembaban</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Tanggal</th>
+                <th class="px-4 py-3">Jam</th>
+
             </tr>
+
         </thead>
 
         <tbody>
@@ -852,43 +696,70 @@ nav[role="navigation"] p{
             @forelse($riwayat as $item)
 
             @php
+
                 $ideal =
                     $item->suhu >= 26 &&
                     $item->suhu <= 30 &&
                     $item->kelembaban >= 80 &&
                     $item->kelembaban <= 90;
+
             @endphp
 
-            <tr>
+            <tr class="bg-white/25 backdrop-blur-md">
 
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $item->suhu }} °C</td>
-                <td>{{ $item->kelembaban }} %</td>
+                <td class="px-4 py-4 rounded-l-2xl text-slate-700">
 
-                <td>
-                    @if($ideal)
-                        <span style="color:#16a34a;font-weight:700;">
-                            Nyaman
-                        </span>
-                    @else
-                        <span style="color:#dc2626;font-weight:700;">
-                            Tidak Nyaman
-                        </span>
-                    @endif
+                    {{ ($riwayat->currentPage() - 1) * $riwayat->perPage() + $loop->iteration }}
+
                 </td>
 
-                <td>{{ $item->created_at->translatedFormat('l') }}</td>
-                <td>{{ $item->created_at->format('d-m-Y') }}</td>
-                <td>{{ $item->created_at->format('H:i:s') }}</td>
+                <td class="px-4 py-4 text-slate-700">
+                    {{ $item->suhu }}°C
+                </td>
+
+                <td class="px-4 py-4 text-slate-700">
+                    {{ $item->kelembaban }}%
+                </td>
+
+                <td class="px-4 py-4">
+
+                    @if($ideal)
+
+                        <span class="px-4 py-2 rounded-xl bg-green-100/70 text-green-700 text-sm">
+                            Nyaman
+                        </span>
+
+                    @else
+
+                        <span class="px-4 py-2 rounded-xl bg-red-100/70 text-red-700 text-sm">
+                            Tidak Nyaman
+                        </span>
+
+                    @endif
+
+                </td>
+
+                <td class="px-4 py-4 text-slate-700">
+                    {{ $item->created_at->format('d-m-Y') }}
+                </td>
+
+                <td class="px-4 py-4 rounded-r-2xl text-slate-700">
+                    {{ $item->created_at->format('H:i:s') }}
+                </td>
 
             </tr>
 
             @empty
 
             <tr>
-                <td colspan="7" style="text-align:center;padding:20px;">
+
+                <td colspan="6"
+                class="text-center py-8 text-slate-500">
+
                     Data tidak ditemukan
+
                 </td>
+
             </tr>
 
             @endforelse
@@ -897,31 +768,65 @@ nav[role="navigation"] p{
 
     </table>
 
+    <!-- PAGINATION -->
+    <div class="w-full flex justify-center mt-10">
+
+    {{ $riwayat->links('pagination::tailwind') }}
+
+</div>
+
 </div>
 
 @endif
 
     <!-- CHART -->
-    <div class="chart-box">
+    <div class="glass soft-shadow chart-glow rounded-[40px] p-8">
 
-        <div class="chart-title">
-            📈 Grafik Monitoring Sensor
+        <div class="mb-8">
+
+            <h3 class="text-3xl font-light text-slate-700 neon-blue">
+                Grafik Monitoring
+            </h3>
+
+            <p class="text-slate-500 mt-2">
+                Grafik realtime suhu dan kelembaban sensor.
+            </p>
+
         </div>
 
         <canvas id="chart"></canvas>
 
     </div>
 
-    <div class="footer">
-        Smart Walet Monitoring System • ESP8266 • DHT11
-    </div>
-
-</div>
 </div>
 
 <script>
 
-// ===== ARRAY =====
+// ===== CLOCK =====
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById('tanggal').innerHTML =
+    now.toLocaleDateString('id-ID',{
+
+        weekday:'long',
+        year:'numeric',
+        month:'long',
+        day:'numeric'
+
+    });
+
+    document.getElementById('jam').innerHTML =
+    now.toLocaleTimeString('id-ID');
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+// ===== DATA =====
 let suhuData = [];
 let lembabData = [];
 let labels = [];
@@ -953,9 +858,9 @@ const chart = new Chart(ctx, {
 
                 data:suhuData,
 
-                borderColor:'#0ea5e9',
+                borderColor:'#7dd3fc',
 
-                backgroundColor:'rgba(14,165,233,0.15)',
+                backgroundColor:'rgba(125,211,252,0.15)',
 
                 fill:true,
 
@@ -969,9 +874,9 @@ const chart = new Chart(ctx, {
 
                 data:lembabData,
 
-                borderColor:'#38bdf8',
+                borderColor:'#93c5fd',
 
-                backgroundColor:'rgba(56,189,248,0.12)',
+                backgroundColor:'rgba(147,197,253,0.12)',
 
                 fill:true,
 
@@ -991,10 +896,9 @@ const chart = new Chart(ctx, {
         animation:false,
 
         plugins:{
-
             legend:{
                 labels:{
-                    color:'#334155'
+                    color:'#475569'
                 }
             }
         },
@@ -1003,11 +907,11 @@ const chart = new Chart(ctx, {
 
             x:{
                 ticks:{
-                    color:'#334155'
+                    color:'#64748b'
                 },
 
                 grid:{
-                    color:'rgba(148,163,184,0.2)'
+                    color:'rgba(148,163,184,0.12)'
                 }
             },
 
@@ -1015,18 +919,18 @@ const chart = new Chart(ctx, {
                 beginAtZero:true,
 
                 ticks:{
-                    color:'#334155'
+                    color:'#64748b'
                 },
 
                 grid:{
-                    color:'rgba(148,163,184,0.2)'
+                    color:'rgba(148,163,184,0.12)'
                 }
             }
         }
     }
 });
 
-// ===== AMBIL DATA =====
+// ===== API =====
 async function ambilData(){
 
     try{
@@ -1042,50 +946,50 @@ async function ambilData(){
         const data =
         response.data;
 
-        // ===== UPDATE TEXT =====
         suhuEl.innerHTML =
-        data.suhu + ' °C';
+        data.suhu + '°C';
 
         lembabEl.innerHTML =
-        data.kelembaban + ' %';
+        data.kelembaban + '%';
 
-        // ===== STATUS =====
+        // STATUS
+        const statusBox =
+        document.getElementById('statusBox');
+
         let ideal =
 
         data.suhu >= 26 &&
-        data.suhu <= 32 &&
+        data.suhu <= 30 &&
 
         data.kelembaban >= 80 &&
         data.kelembaban <= 90;
 
-        const statusBox =
-        document.getElementById('statusBox');
-
         if(ideal){
 
-            statusBox.innerHTML =
-            "🟢 KONDISI IDEAL<br><span class='info'>Lingkungan rumah walet sangat baik dan stabil</span>";
+            statusBox.innerHTML = `
+                <div class="text-lg text-slate-500 mb-2">
+                    Status Monitoring
+                </div>
 
-            statusBox.className =
-            "status ideal";
+                <div class="text-3xl font-light text-green-700">
+                    🟢 Kondisi Ideal
+                </div>
+            `;
 
         }else{
 
-            statusBox.innerHTML =
-            "🔴 KONDISI TIDAK IDEAL<br><span class='info'>Suhu atau kelembaban perlu disesuaikan</span>";
+            statusBox.innerHTML = `
+                <div class="text-lg text-slate-500 mb-2">
+                    Status Monitoring
+                </div>
 
-            statusBox.className =
-            "status tidak";
+                <div class="text-3xl font-light text-red-700">
+                    🔴 Tidak Ideal
+                </div>
+            `;
         }
 
-        // ===== UPDATE TIME =====
-        document.getElementById('lastUpdate')
-        .innerHTML =
-
-        "Update terakhir: " +
-        new Date().toLocaleTimeString();
-
-        // ===== UPDATE CHART =====
+        // CHART
         let waktu =
         new Date().toLocaleTimeString();
 
@@ -1095,34 +999,33 @@ async function ambilData(){
 
         lembabData.push(data.kelembaban);
 
-        // MAX DATA
         if(labels.length > 10){
 
             labels.shift();
-
             suhuData.shift();
-
             lembabData.shift();
+
         }
 
-        // TANPA BERKEDIP
         chart.update('none');
 
     }catch(error){
 
         console.log(error);
+
     }
+
 }
 
-// ===== LOAD =====
+// LOAD
 ambilData();
 
-// ===== AUTO REFRESH =====
+// AUTO REFRESH
 setInterval(() => {
 
     ambilData();
 
-}, 5000);
+},5000);
 
 </script>
 
